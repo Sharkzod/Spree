@@ -37,9 +37,9 @@ export default function Nav() {
           : "border-b border-transparent py-4.5"
       }`}
     >
-      <div className="flex items-center justify-between w-[90%]">
+      <div className="flex items-center justify-between w-[90%] m-auto">
         <a href="#" className="" onClick={() => setOpen(false)}>
-          <Image src="/logo.jpg" alt="Spree" width={1080} height={704} priority className="h-16 w-auto" />
+          <Image src="/logo.png" alt="Spree" width={980} height={704} priority className="h-10 w-12" />
         </a>
         <div className="ml-auto hidden items-center gap-8 md:flex">
           {LINKS.map((l) => (
