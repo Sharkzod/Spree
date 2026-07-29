@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STEVANO — Premium streetwear, dropping soon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141414;
+    --paper:#ffffff;
+    --smoke:#f5f5f4;
+    --ash:#e7e5e4;
+    --stone:#a8a29e;
+    --slate:#78716c;
+    --amber:#ffc107;
+    --amber-deep:#e0a800;
+    --radius:22px;
+    --shadow:0 20px 50px -20px rgba(20,20,20,.25);
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--paper);color:var(--ink);
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  ::selection{background:var(--ink);color:var(--paper)}
+  h1,h2,h3,h4,.display{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  input{font-family:inherit}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(30px);transition:.8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:80;
+    display:flex;align-items:center;padding:18px 40px;
+    transition:.4s var(--ease);
+  }
+  .nav.scrolled{background:rgba(255,255,255,.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--ash);padding:14px 40px}
+  .nav .brand{display:flex;align-items:center;gap:12px;font-family:'Space Grotesk';font-weight:700;font-size:20px;letter-spacing:-.01em}
+  .nav .mark{width:38px;height:38px;border-radius:12px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:19px}
+  .nav .links{margin-left:auto;display:flex;gap:34px;align-items:center}
+  .nav .links a{font-size:14px;font-weight:500;color:var(--slate);transition:.25s}
+  .nav .links a:hover{color:var(--ink)}
+  .nav .cta{
+    background:var(--ink);color:var(--paper);padding:11px 22px;border-radius:12px;
+    font-weight:600;font-size:14px;transition:.3s var(--ease);
+  }
+  .nav .cta:hover{background:var(--amber);color:var(--ink);transform:translateY(-2px)}
+  .burger{display:none}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:150px 0 90px;position:relative;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+  .badge-live{
+    display:inline-flex;align-items:center;gap:9px;background:var(--smoke);
+    border:1.5px solid var(--ash);padding:8px 16px;border-radius:999px;
+    font-size:13px;font-weight:600;color:var(--slate);margin-bottom:26px;
+  }
+  .badge-live .dot{width:8px;height:8px;border-radius:50%;background:var(--amber);position:relative}
+  .badge-live .dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;background:var(--amber);opacity:.4;animation:ping 1.8s ease-out infinite}
+  @keyframes ping{0%{transform:scale(1);opacity:.4}100%{transform:scale(2.6);opacity:0}}
+  .hero h1{font-size:clamp(44px,6vw,78px);line-height:.98;font-weight:600;letter-spacing:-.03em}
+  .hero h1 em{font-style:normal;position:relative;color:var(--ink)}
+  .hero h1 em::after{content:"";position:absolute;left:-2px;right:-2px;bottom:.08em;height:.32em;background:var(--amber);z-index:-1;border-radius:3px}
+  .hero p.lead{font-size:18px;color:var(--slate);line-height:1.6;margin:26px 0 34px;max-width:460px}
+  .hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .btn-lg{
+    background:var(--ink);color:var(--paper);padding:17px 32px;border-radius:15px;
+    font-weight:600;font-size:15.5px;display:inline-flex;align-items:center;gap:11px;transition:.3s var(--ease);
+  }
+  .btn-lg svg{width:18px;height:18px;transition:.3s var(--ease)}
+  .btn-lg:hover{background:var(--amber);color:var(--ink);transform:translateY(-3px);box-shadow:0 18px 34px -14px rgba(255,193,7,.6)}
+  .btn-lg:hover svg{transform:translateX(4px)}
+  .btn-ghost-lg{padding:17px 28px;border-radius:15px;border:1.5px solid var(--ash);font-weight:600;font-size:15.5px;transition:.3s var(--ease)}
+  .btn-ghost-lg:hover{border-color:var(--ink);transform:translateY(-3px)}
+  .hero-proof{display:flex;align-items:center;gap:14px;margin-top:34px}
+  .avatars{display:flex}
+  .avatars img{width:40px;height:40px;border-radius:50%;border:2.5px solid var(--paper);object-fit:cover;margin-left:-12px}
+  .avatars img:first-child{margin-left:0}
+  .hero-proof .txt{font-size:13.5px;color:var(--slate);line-height:1.4}
+  .hero-proof .txt b{color:var(--ink);font-family:'Space Grotesk'}
+
+  /* hero visual — stacked editorial cards */
+  .hero-visual{position:relative;height:520px}
+  .hv-card{position:absolute;border-radius:26px;overflow:hidden;box-shadow:var(--shadow)}
+  .hv-card img{width:100%;height:100%;object-fit:cover}
+  .hv-1{width:66%;height:78%;top:0;right:0;z-index:2;animation:floatA 7s ease-in-out infinite}
+  .hv-2{width:52%;height:60%;bottom:0;left:0;z-index:3;animation:floatB 8s ease-in-out infinite}
+  @keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+  @keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(14px)}}
+  .hv-tag{
+    position:absolute;z-index:4;background:var(--paper);border-radius:16px;padding:14px 18px;
+    box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;
+  }
+  .hv-tag.a{top:24px;left:-8px;animation:floatB 6s ease-in-out infinite}
+  .hv-tag.b{bottom:34px;right:-10px;animation:floatA 6.5s ease-in-out infinite}
+  .hv-tag .ico{width:38px;height:38px;border-radius:11px;background:var(--ink);color:var(--amber);display:grid;place-items:center}
+  .hv-tag .ico svg{width:19px;height:19px}
+  .hv-tag .n{font-family:'Space Grotesk';font-weight:700;font-size:15px}
+  .hv-tag .l{font-size:11px;color:var(--slate)}
+
+  /* ---------- MARQUEE ---------- */
+  .marquee{border-top:1px solid var(--ash);border-bottom:1px solid var(--ash);padding:22px 0;overflow:hidden;background:var(--ink);color:var(--paper)}
+  .marquee-track{display:flex;gap:56px;white-space:nowrap;animation:scroll 26s linear infinite;width:max-content}
+  .marquee span{font-family:'Space Grotesk';font-weight:600;font-size:19px;display:flex;align-items:center;gap:56px;letter-spacing:.01em}
+  .marquee em{color:var(--amber);font-style:normal}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:100px 0}
+  .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber-deep);font-weight:700;display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .eyebrow::before{content:"";width:30px;height:1.5px;background:var(--amber-deep)}
+  .sec-title{font-size:clamp(30px,3.6vw,46px);font-weight:600;line-height:1.05;max-width:640px}
+  .sec-intro{color:var(--slate);font-size:17px;line-height:1.6;max-width:520px;margin-top:18px}
+  .sec-head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:50px;flex-wrap:wrap}
+
+  /* ---------- FEATURED DROPS ---------- */
+  .drops{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .drop{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer;background:var(--smoke)}
+  .drop-img{aspect-ratio:1/1.2;overflow:hidden}
+  .drop-img img{width:100%;height:100%;object-fit:cover;transition:.8s var(--ease)}
+  .drop:hover .drop-img img{transform:scale(1.07)}
+  .drop-lock{
+    position:absolute;inset:0;background:linear-gradient(to top,rgba(20,20,20,.88),transparent 55%);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:24px;color:var(--paper);
+  }
+  .drop-num{position:absolute;top:18px;left:18px;background:var(--amber);color:var(--ink);font-family:'Space Grotesk';font-weight:700;font-size:13px;padding:6px 12px;border-radius:9px}
+  .drop-lockicon{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);display:grid;place-items:center}
+  .drop-lockicon svg{width:17px;height:17px;color:var(--paper)}
+  .drop-lock h3{font-size:21px;font-weight:600;margin-bottom:4px}
+  .drop-lock .price{font-size:14px;color:rgba(255,255,255,.7);font-family:'Space Grotesk';font-weight:600}
+  .drop-lock .price s{color:rgba(255,255,255,.4);margin-right:8px}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .how{background:var(--smoke)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .step{background:var(--paper);border-radius:var(--radius);padding:34px 30px;transition:.4s var(--ease);border:1.5px solid transparent}
+  .step:hover{transform:translateY(-6px);border-color:var(--ink);box-shadow:var(--shadow)}
+  .step .idx{font-family:'Space Grotesk';font-size:14px;font-weight:700;color:var(--stone);margin-bottom:22px}
+  .step .ico{width:56px;height:56px;border-radius:16px;background:var(--ink);color:var(--amber);display:grid;place-items:center;margin-bottom:22px}
+  .step .ico svg{width:26px;height:26px}
+  .step h3{font-size:20px;font-weight:600;margin-bottom:10px}
+  .step p{color:var(--slate);font-size:14.5px;line-height:1.6}
+
+  /* ---------- DELIVERY ---------- */
+  .deliver-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .deliver-visual{border-radius:26px;overflow:hidden;aspect-ratio:1/1;position:relative;box-shadow:var(--shadow)}
+  .deliver-visual img{width:100%;height:100%;object-fit:cover}
+  .cities{display:flex;flex-direction:column;gap:14px;margin-top:34px}
+  .city{
+    display:flex;align-items:center;gap:16px;background:var(--paper);border:1.5px solid var(--ash);
+    border-radius:16px;padding:18px 22px;transition:.3s var(--ease);
+  }
+  .city:hover{border-color:var(--ink);transform:translateX(6px)}
+  .city .flag{width:44px;height:44px;border-radius:12px;background:var(--smoke);display:grid;place-items:center;font-family:'Space Grotesk';font-weight:700;color:var(--ink)}
+  .city .info{flex:1}
+  .city .info .n{font-weight:600;font-size:16px;font-family:'Space Grotesk'}
+  .city .info .s{font-size:13px;color:var(--slate);margin-top:2px}
+  .city .status{font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;text-transform:uppercase;letter-spacing:.04em}
+  .city .status.live{background:#dcfce7;color:#15803d}
+  .city .status.soon{background:var(--smoke);color:var(--slate)}
+
+  /* ---------- WAITLIST ---------- */
+  .waitlist{background:var(--ink);color:var(--paper);border-radius:36px;margin:0 40px;padding:0;overflow:hidden;max-width:1240px;margin-left:auto;margin-right:auto}
+  .wl-inner{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .wl-left{padding:64px 56px}
+  .wl-left .eyebrow{color:var(--amber)}
+  .wl-left .eyebrow::before{background:var(--amber)}
+  .wl-left h2{font-size:clamp(30px,3.4vw,44px);font-weight:600;line-height:1.05;margin-bottom:20px}
+  .wl-left h2 em{font-style:normal;color:var(--amber)}
+  .perks{display:flex;flex-direction:column;gap:16px;margin-top:32px}
+  .perk{display:flex;align-items:center;gap:14px}
+  .perk .check{width:30px;height:30px;border-radius:9px;background:rgba(255,193,7,.15);display:grid;place-items:center;flex-shrink:0}
+  .perk .check svg{width:16px;height:16px;color:var(--amber)}
+  .perk span{font-size:15.5px;color:rgba(255,255,255,.9)}
+  .perk span b{color:var(--paper);font-weight:600}
+  .wl-count{display:flex;align-items:baseline;gap:12px;margin-top:40px;padding-top:30px;border-top:1px solid rgba(255,255,255,.14)}
+  .wl-count .big{font-family:'Space Grotesk';font-size:42px;font-weight:700;color:var(--amber)}
+  .wl-count .lbl{font-size:13px;color:rgba(255,255,255,.6);line-height:1.4}
+  .wl-bar{height:8px;border-radius:4px;background:rgba(255,255,255,.12);margin-top:16px;overflow:hidden}
+  .wl-bar span{display:block;height:100%;background:var(--amber);border-radius:4px;width:0;transition:width 1.4s var(--ease)}
+  .wl-spots{font-size:12.5px;color:rgba(255,255,255,.55);margin-top:10px}
+
+  .wl-right{background:rgba(255,255,255,.04);padding:56px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid rgba(255,255,255,.08)}
+  .wl-form h3{font-size:22px;margin-bottom:6px}
+  .wl-form .sub{font-size:14px;color:rgba(255,255,255,.55);margin-bottom:28px}
+  .fld{margin-bottom:16px}
+  .fld label{display:block;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.6);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+  .fld input,.fld select{
+    width:100%;height:52px;border-radius:14px;background:rgba(255,255,255,.06);
+    border:1.5px solid rgba(255,255,255,.14);padding:0 16px;color:var(--paper);font-size:15px;transition:.25s var(--ease);
+  }
+  .fld input::placeholder{color:rgba(255,255,255,.35)}
+  .fld input:focus,.fld select:focus{outline:none;border-color:var(--amber);background:rgba(255,255,255,.09)}
+  .fld select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23a8a29e' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+  .fld select option{color:var(--ink)}
+  .fld-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .fld .opt{font-weight:400;text-transform:none;letter-spacing:0;color:rgba(255,255,255,.4)}
+  .wl-submit{
+    width:100%;height:56px;background:var(--paper);color:var(--ink);border-radius:15px;
+    font-weight:600;font-size:15.5px;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:10px;transition:.3s var(--ease);
+  }
+  .wl-submit svg{width:18px;height:18px;transition:.3s var(--ease)}
+  .wl-submit:hover{background:var(--amber);transform:translateY(-2px)}
+  .wl-submit:hover svg{transform:translateX(4px)}
+  .wl-fine{font-size:12px;color:rgba(255,255,255,.4);text-align:center;margin-top:16px;line-height:1.5}
+
+  /* success state */
+  .wl-done{display:none;text-align:center;padding:20px 0}
+  .wl-done.show{display:block;animation:pop .6s var(--ease)}
+  @keyframes pop{0%{opacity:0;transform:scale(.9)}60%{transform:scale(1.03)}100%{opacity:1;transform:scale(1)}}
+  .wl-done .ring{width:90px;height:90px;border-radius:50%;background:rgba(255,193,7,.15);display:grid;place-items:center;margin:0 auto 24px}
+  .wl-done .ring svg{width:44px;height:44px;color:var(--amber);stroke-width:2.5}
+  .wl-done h3{font-size:24px;margin-bottom:12px}
+  .wl-done p{color:rgba(255,255,255,.6);line-height:1.6;font-size:15px}
+  .wl-done .num-badge{display:inline-block;margin-top:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:12px 22px;border-radius:14px;font-family:'Space Grotesk';font-weight:600}
+  .wl-done .num-badge b{color:var(--amber)}
+
+  /* ---------- COUNTDOWN ---------- */
+  .countdown{text-align:center}
+  .cd-timer{display:flex;justify-content:center;gap:20px;margin-top:44px;flex-wrap:wrap}
+  .cd-unit{background:var(--smoke);border-radius:20px;padding:28px 30px;min-width:130px;transition:.3s var(--ease)}
+  .cd-unit:hover{background:var(--ink);color:var(--paper)}
+  .cd-unit .v{font-family:'Space Grotesk';font-size:52px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+  .cd-unit .u{font-size:13px;color:var(--slate);text-transform:uppercase;letter-spacing:.12em;margin-top:12px;font-weight:600}
+  .cd-unit:hover .u{color:rgba(255,255,255,.6)}
+
+  /* ---------- FAQ ---------- */
+  .faq{background:var(--smoke)}
+  .faq-list{max-width:760px;margin:0 auto}
+  .faq-item{background:var(--paper);border-radius:18px;margin-bottom:14px;overflow:hidden;border:1.5px solid transparent;transition:.3s var(--ease)}
+  .faq-item.open{border-color:var(--ink)}
+  .faq-q{width:100%;text-align:left;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;font-family:'Space Grotesk';font-weight:600;font-size:17px}
+  .faq-q .pm{width:32px;height:32px;border-radius:10px;background:var(--smoke);display:grid;place-items:center;flex-shrink:0;transition:.3s var(--ease)}
+  .faq-q .pm svg{width:18px;height:18px;transition:.3s var(--ease)}
+  .faq-item.open .pm{background:var(--ink);color:var(--paper)}
+  .faq-item.open .pm svg{transform:rotate(45deg)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease)}
+  .faq-a p{padding:0 28px 26px;color:var(--slate);line-height:1.7;font-size:15px}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:var(--paper);padding:70px 0 40px}
+  .foot-top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:40px;padding-bottom:50px;border-bottom:1px solid rgba(255,255,255,.12)}
+  .foot-brand .mark{width:44px;height:44px;border-radius:13px;background:var(--paper);color:var(--ink);display:grid;place-items:center;font-family:'Space Grotesk';font-weight:700;font-size:21px;margin-bottom:20px}
+  .foot-brand p{color:rgba(255,255,255,.55);font-size:14.5px;line-height:1.6;max-width:320px}
+  .foot-socials{display:flex;gap:12px;margin-top:24px}
+  .foot-socials a{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center;transition:.3s var(--ease)}
+  .foot-socials a:hover{background:var(--amber);color:var(--ink);transform:translateY(-3px)}
+  .foot-socials svg{width:20px;height:20px}
+  .foot-col h4{font-size:14px;margin-bottom:20px;color:rgba(255,255,255,.9)}
+  .foot-col a{display:block;color:rgba(255,255,255,.55);font-size:14px;margin-bottom:13px;transition:.25s}
+  .foot-col a:hover{color:var(--amber)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:30px;color:rgba(255,255,255,.4);font-size:13px;flex-wrap:wrap;gap:14px}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:960px){
+    .hero-grid,.deliver-grid,.wl-inner{grid-template-columns:1fr}
+    .hero-visual{height:420px;margin-top:20px}
+    .drops,.steps{grid-template-columns:1fr 1fr}
+    .wl-right{border-left:none;border-top:1px solid rgba(255,255,255,.08)}
+    .nav .links{display:none}
+    .foot-top{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 20px}
+    .nav{padding:14px 20px}
+    .nav.scrolled{padding:12px 20px}
+    section{padding:70px 0}
+    .drops,.steps{grid-template-columns:1fr}
+    .fld-row{grid-template-columns:1fr}
+    .waitlist{margin:0 16px;border-radius:28px}
+    .wl-left,.wl-right{padding:40px 28px}
+    .cd-unit{min-width:calc(50% - 10px);padding:22px 16px}
+    .cd-unit .v{font-size:40px}
+    .foot-top{grid-template-columns:1fr}
+    .hero{padding:120px 0 60px}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#" class="brand"><span class="mark">S</span> STEVANO</a>
+  <div class="links">
+    <a href="#drops">Collections</a>
+    <a href="#how">How it works</a>
+    <a href="#delivery">Delivery</a>
+    <a href="#faq">FAQ</a>
+    <a href="#waitlist" class="cta">Join waitlist</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy reveal in">
+        <div class="badge-live"><span class="dot"></span> Launching this season · Early access open</div>
+        <h1>Premium streetwear, <em>delivered</em> to your door.</h1>
+        <p class="lead">Exclusive drops. Fast local delivery. Limited collections you won't find anywhere else. Be first in line before we go live.</p>
+        <div class="hero-actions">
+          <a href="#waitlist" class="btn-lg">
+            Join the waitlist
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#drops" class="btn-ghost-lg">See the drops</a>
+        </div>
+        <div class="hero-proof">
+          <div class="avatars">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80" alt="">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&q=80" alt="">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" alt="">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80" alt="">
+          </div>
+          <div class="txt"><b id="proofCount">1,240</b> people already reserved their spot</div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal in">
+        <div class="hv-card hv-1"><img src="https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=700&q=80" alt="Streetwear look"></div>
+        <div class="hv-card hv-2"><img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80" alt="Graphic tee"></div>
+        <div class="hv-tag a">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5ZM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <div><div class="n">Limited drops</div><div class="l">New every week</div></div>
+        </div>
+        <div class="hv-tag b">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8Z"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18.5" r="2"/></svg></div>
+          <div><div class="n">Same-week delivery</div><div class="l">Lagos & Abuja</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Limited collections <em>✦</em> Exclusive member drops <em>✦</em> Fast local delivery <em>✦</em> Early-access pricing <em>✦</em> Made for the streets <em>✦</em></span>
+    <span>Limited collections <em>✦</em> Exclusive member drops <em>✦</em> Fast local delivery <em>✦</em> Early-access pricing <em>✦</em> Made for the streets <em>✦</em></span>
+  </div>
+</div>
+
+<!-- FEATURED DROPS -->
+<section id="drops">
+  <div class="wrap">
+    <div class="sec-head-row reveal">
+      <div>
+        <div class="eyebrow">The first collection</div>
+        <h2 class="sec-title">A preview of what's dropping.</h2>
+      </div>
+      <p class="sec-intro">These pieces unlock at launch. Waitlist members get first pick — and the launch discount — before anyone else.</p>
+    </div>
+    <div class="drops" id="dropsGrid"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="how">
+  <div class="wrap">
+    <div class="sec-head-row reveal">
+      <div>
+        <div class="eyebrow">Simple by design</div>
+        <h2 class="sec-title">How ordering will work.</h2>
+      </div>
+      <p class="sec-intro">No complicated steps. Browse the drop, reserve your size, and we bring it to you.</p>
+    </div>
+    <div class="steps" id="stepsGrid"></div>
+  </div>
+</section>
+
+<!-- DELIVERY -->
+<section id="delivery">
+  <div class="wrap">
+    <div class="deliver-grid">
+      <div class="reveal">
+        <div class="eyebrow">Where we deliver</div>
+        <h2 class="sec-title">Starting close to home, expanding fast.</h2>
+        <p class="sec-intro">We're launching city by city so every order arrives quickly. Tell us where you are when you join — it decides where we drop next.</p>
+        <div class="cities" id="citiesList"></div>
+      </div>
+      <div class="deliver-visual reveal">
+        <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80" alt="Delivery">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section id="waitlist" style="padding-top:40px">
+  <div class="waitlist reveal">
+    <div class="wl-inner">
+      <div class="wl-left">
+        <div class="eyebrow">Join the waitlist</div>
+        <h2>Reserve your spot and <em>skip the line.</em></h2>
+        <p style="color:rgba(255,255,255,.6);font-size:16px;line-height:1.6;max-width:420px">Members get more than a heads-up. Sign up now and lock in these launch perks:</p>
+        <div class="perks">
+          <div class="perk"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>15% off</b> your first order</span></div>
+          <div class="perk"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Early access</b> to every new collection</span></div>
+          <div class="perk"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Limited-edition</b> launch-only pieces</span></div>
+          <div class="perk"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Free delivery</b> on your first purchase</span></div>
+        </div>
+        <div class="wl-count">
+          <div class="big" id="wlBig">1,240</div>
+          <div class="lbl">of 2,000 early-access<br>spots claimed</div>
+        </div>
+        <div class="wl-bar"><span id="wlBar"></span></div>
+        <div class="wl-spots" id="wlSpots">760 spots left before early access closes</div>
+      </div>
+
+      <div class="wl-right">
+        <div class="wl-form" id="wlForm">
+          <h3>Claim your early access</h3>
+          <div class="sub">Takes 20 seconds. No spam, ever.</div>
+          <div class="fld"><label>Full name</label><input id="fName" placeholder="Albert Stevano"></div>
+          <div class="fld"><label>Email address</label><input id="fEmail" type="email" placeholder="you@email.com"></div>
+          <div class="fld-row">
+            <div class="fld"><label>Phone <span class="opt">(optional)</span></label><input id="fPhone" placeholder="+234 ..."></div>
+            <div class="fld"><label>City</label>
+              <select id="fCity">
+                <option value="">Select</option>
+                <option>Lagos</option>
+                <option>Abuja</option>
+                <option>Port Harcourt</option>
+                <option>Ibadan</option>
+                <option>Kano</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <button class="wl-submit" id="wlSubmit">
+            Reserve my spot
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <div class="wl-fine">By joining you agree to receive launch updates. Unsubscribe anytime.</div>
+        </div>
+
+        <div class="wl-done" id="wlDone">
+          <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <h3>You're on the list! 🎉</h3>
+          <p id="wlDoneMsg">We'll email you the moment the first collection drops — with your 15% member discount locked in.</p>
+          <div class="num-badge">You're member <b id="wlMemberNum">#1,241</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<section class="countdown">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow" style="justify-content:center">The clock is ticking</div>
+      <h2 class="sec-title" style="margin:0 auto;text-align:center">First drop goes live in</h2>
+      <div class="cd-timer">
+        <div class="cd-unit"><div class="v" id="cdD">00</div><div class="u">Days</div></div>
+        <div class="cd-unit"><div class="v" id="cdH">00</div><div class="u">Hours</div></div>
+        <div class="cd-unit"><div class="v" id="cdM">00</div><div class="u">Minutes</div></div>
+        <div class="cd-unit"><div class="v" id="cdS">00</div><div class="u">Seconds</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="faq">
+  <div class="wrap">
+    <div style="text-align:center;margin-bottom:50px" class="reveal">
+      <div class="eyebrow" style="justify-content:center">Good questions</div>
+      <h2 class="sec-title" style="margin:0 auto">Everything you might ask.</h2>
+    </div>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="mark">S</div>
+        <p>STEVANO — premium streetwear for people who dress with intent. Exclusive drops, delivered fast. Launching this season.</p>
+        <div class="foot-socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 6.3a5 5 0 0 1-3.3-2.6 5 5 0 0 1-.4-1.7h-3.3v13.4a2.6 2.6 0 1 1-2.6-2.6c.2 0 .4 0 .6.1v-3.4a6 6 0 0 0-.6 0 6 6 0 1 0 6 6V8.7a8 8 0 0 0 4.6 1.5V6.8a4.8 4.8 0 0 1-1-.5Z"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.3 8.3L23.2 22h-6.7l-5.2-6.8L5.3 22H2.2l7.8-8.9L1.2 2h6.8l4.7 6.2L18.9 2Zm-1.2 18h1.9L7.1 4H5.1l12.6 16Z"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <a href="#drops">Collections</a>
+        <a href="#how">How it works</a>
+        <a href="#delivery">Delivery areas</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#">About us</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+        <a href="#waitlist">Join waitlist</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div>© 2026 STEVANO. All rights reserved.</div>
+      <div>Made for the streets, one drop at a time.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- DATA ---------- */
+const DROPS=[
+  {n:"Street Style Puffer",price:"₦119,000",old:"₦149,000",num:"Drop 01",img:"https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600&q=80"},
+  {n:"Oversized Graphic Tee",price:"₦36,000",old:"₦44,000",num:"Drop 02",img:"https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80"},
+  {n:"Denim Trucker Jacket",price:"₦76,000",old:null,num:"Drop 03",img:"https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=600&q=80"},
+];
+const STEPS=[
+  {ico:'<path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5Z"/>',t:"Browse the drop",p:"New limited collections land every week. Members see them first, days before the public."},
+  {ico:'<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>',t:"Reserve your size",p:"Pick your pieces and lock your size in a tap. Limited stock means once it's gone, it's gone."},
+  {ico:'<path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8Z"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18.5" r="2"/>',t:"Delivered to you",p:"We bring it to your door — same week in launch cities, with tracking the whole way."},
+];
+const CITIES=[
+  {abbr:"LG",n:"Lagos",s:"Same-week delivery",status:"live",label:"Launching"},
+  {abbr:"AB",n:"Abuja",s:"Same-week delivery",status:"live",label:"Launching"},
+  {abbr:"PH",n:"Port Harcourt",s:"Next in the rollout",status:"soon",label:"Soon"},
+  {abbr:"IB",n:"Ibadan",s:"Voting open on the waitlist",status:"soon",label:"Soon"},
+];
+const FAQ=[
+  {q:"What exactly is STEVANO?",a:"A premium streetwear label built around limited, exclusive drops. Instead of endless racks, we release small collections you won't find anywhere else — and deliver them straight to your door."},
+  {q:"What does joining the waitlist actually get me?",a:"You lock in 15% off your first order, free first delivery, early access to every collection before the public, and the chance at launch-only limited pieces. It's the best deal we'll ever offer."},
+  {q:"Does it cost anything to join?",a:"Nothing. The waitlist is completely free. You're simply reserving your spot and your member perks ahead of launch."},
+  {q:"When does the first collection drop?",a:"We're launching this season — the exact date is on the countdown above. Everyone on the waitlist gets an email and SMS the moment it goes live."},
+  {q:"Where do you deliver?",a:"We're launching in Lagos and Abuja first, then expanding city by city. When you join we ask for your city so we can prioritise where demand is highest — your answer helps decide where we go next."},
+  {q:"How will you contact me?",a:"Only about the launch and your member perks. We'll email you (and text, if you share your number) when the drop is live. No spam, and you can unsubscribe anytime."},
+];
+
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+
+/* ---------- RENDER DROPS ---------- */
+$("#dropsGrid").innerHTML=DROPS.map(d=>`
+  <div class="drop">
+    <span class="drop-num">${d.num}</span>
+    <div class="drop-lockicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+    <div class="drop-img"><img src="${d.img}" alt="${d.n}"></div>
+    <div class="drop-lock">
+      <h3>${d.n}</h3>
+      <div class="price">${d.old?`<s>${d.old}</s>`:""}${d.price} <span style="color:var(--amber)">· unlocks at launch</span></div>
+    </div>
+  </div>`).join("");
+
+/* ---------- RENDER STEPS ---------- */
+$("#stepsGrid").innerHTML=STEPS.map((s,i)=>`
+  <div class="step">
+    <div class="idx">STEP ${String(i+1).padStart(2,"0")}</div>
+    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${s.ico}</svg></div>
+    <h3>${s.t}</h3>
+    <p>${s.p}</p>
+  </div>`).join("");
+
+/* ---------- RENDER CITIES ---------- */
+$("#citiesList").innerHTML=CITIES.map(c=>`
+  <div class="city">
+    <div class="flag">${c.abbr}</div>
+    <div class="info"><div class="n">${c.n}</div><div class="s">${c.s}</div></div>
+    <div class="status ${c.status}">${c.label}</div>
+  </div>`).join("");
+
+/* ---------- RENDER FAQ ---------- */
+$("#faqList").innerHTML=FAQ.map(f=>`
+  <div class="faq-item">
+    <button class="faq-q">${f.q}<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span></button>
+    <div class="faq-a"><p>${f.a}</p></div>
+  </div>`).join("");
+$$(".faq-item").forEach(item=>{
+  item.querySelector(".faq-q").onclick=()=>{
+    const open=item.classList.contains("open");
+    $$(".faq-item").forEach(x=>{x.classList.remove("open");x.querySelector(".faq-a").style.maxHeight=null;});
+    if(!open){item.classList.add("open");const a=item.querySelector(".faq-a");a.style.maxHeight=a.scrollHeight+"px";}
+  };
+});
+
+/* ---------- NAV SCROLL ---------- */
+addEventListener("scroll",()=>{$("#nav").classList.toggle("scrolled",scrollY>30);});
+
+/* ---------- SCROLL REVEAL ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.15});
+$$(".reveal:not(.in)").forEach(el=>io.observe(el));
+
+/* ---------- WAITLIST COUNTER ---------- */
+const GOAL=2000;
+let members=1240;
+function paintCounter(){
+  const pct=Math.min(100,members/GOAL*100);
+  $("#wlBig").textContent=members.toLocaleString();
+  $("#proofCount").textContent=members.toLocaleString();
+  $("#wlSpots").textContent=`${(GOAL-members).toLocaleString()} spots left before early access closes`;
+  setTimeout(()=>{$("#wlBar").style.width=pct+"%";},300);
+}
+// animate the bar when the waitlist scrolls into view
+const wlIo=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){paintCounter();wlIo.disconnect();}}),{threshold:.3});
+wlIo.observe($("#waitlist"));
+
+/* ---------- WAITLIST SUBMIT ---------- */
+$("#wlSubmit").onclick=()=>{
+  const name=$("#fName").value.trim();
+  const email=$("#fEmail").value.trim();
+  const city=$("#fCity").value;
+  if(!name){flash("#fName");return;}
+  if(!email||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){flash("#fEmail");return;}
+  if(!city){flash("#fCity");return;}
+  members++;
+  $("#wlMemberNum").textContent="#"+(members+1).toLocaleString();
+  $("#wlDoneMsg").textContent=`Thanks ${name.split(" ")[0]} — we'll email you the moment the first collection drops in ${city}, with your 15% member discount locked in.`;
+  $("#wlForm").style.display="none";
+  $("#wlDone").classList.add("show");
+  paintCounter();
+};
+function flash(sel){
+  const el=$(sel);el.style.borderColor="#ef4444";
+  el.animate([{transform:"translateX(0)"},{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"translateX(0)"}],{duration:300});
+  el.focus();
+  setTimeout(()=>el.style.borderColor="",1500);
+}
+
+/* ---------- COUNTDOWN (14 days out) ---------- */
+const target=new Date().getTime()+14*24*60*60*1000 - 3*60*60*1000;
+function tick(){
+  const diff=Math.max(0,target-Date.now());
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff%86400000/3600000);
+  const m=Math.floor(diff%3600000/60000);
+  const s=Math.floor(diff%60000/1000);
+  $("#cdD").textContent=String(d).padStart(2,"0");
+  $("#cdH").textContent=String(h).padStart(2,"0");
+  $("#cdM").textContent=String(m).padStart(2,"0");
+  $("#cdS").textContent=String(s).padStart(2,"0");
+}
+tick();setInterval(tick,1000);
+</script>
+</body>
+</html>
