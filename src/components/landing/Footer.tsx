@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto max-w-[1240px] px-10 max-[600px]:px-5">
         <div className="grid grid-cols-1 gap-10 border-b border-white/12 pb-[50px] sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]">
           <div>
-            <Image src="/logo.jpg" alt="Spree" width={1280} height={704} className="mb-5 h-14 w-auto rounded-[13px]" />
+            <Image src="/logo.png" alt="Spree" width={1280} height={704} className="mb-5 h-14 w-auto rounded-[13px]" />
             <p className="max-w-[320px] text-[14.5px] leading-relaxed text-white/55">
               Spree — premium streetwear for people who dress with intent. Exclusive drops,
               delivered fast. Launching this season.
